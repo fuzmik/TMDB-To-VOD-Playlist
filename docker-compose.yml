@@ -1,17 +1,17 @@
----
-version: "3.8"
+#version: "3.8"
 
 services:
   php_app:
     build:
       context: .
       dockerfile: Dockerfile.php
-      platform: linux/arm64
-    container_name: TMDB_VOD_PHP_APP
+#      platform: linux/arm64
+    container_name: TMDB_VOD
+    image: ${TMDBPHPIMAGE}
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html/  # Mount project directory for live code changes
+#      - .:/var/www/html/  # Mount project directory for live code changes
       - tmdb_php_data:/var/www/html/data # New volume for PHP app data (logs, cache, etc.)
     environment:
       # TMDB Settings
@@ -36,9 +36,9 @@ services:
     build:
       context: ./HeadlessVidX
       dockerfile: Dockerfile
-      platform: linux/arm64
+#      platform: linux/arm64
     container_name: HeadlessVidX
-    image: gogetta69/headlessvidx:latest # Keep this if you want to use the pre-built image as a fallback or for specific architectures
+    image: ${HEADLESSVIDXIMAGE} # Keep this if you want to use the pre-built image as a fallback or for specific architectures
     ports:
       - "3202:3202"
     volumes:
@@ -48,8 +48,8 @@ services:
       - SHOW_BROWSER=${SHOW_BROWSER}
       - HEADLESS_PROXY=${HEADLESS_PROXY}
       - USE_STEALTH_PLUGIN=${USE_STEALTH_PLUGIN}
-      - FIREFOX_EXECUTABLE_PATH=${FIREFOX_EXECUTABLE_PATH}
-      - VIDEO_TMP_DIR=${VIDEO_TMP_DIR}
+#      - FIREFOX_EXECUTABLE_PATH=${FIREFOX_EXECUTABLE_PATH}
+#      - VIDEO_TMP_DIR=${VIDEO_TMP_DIR}
     restart: unless-stopped
     networks:
       - cosmos-tmdb-default
@@ -62,8 +62,10 @@ networks:
 
 volumes:
   tmdb_php_data: # New volume definition for PHP app data
+    name: tmdb_php_data
     driver: local
     external: false
   headlessvidx_data: # Changed from vidx_files
+    name: headlessvidx_data
     driver: local
     external: false
