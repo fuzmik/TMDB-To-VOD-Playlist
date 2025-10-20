@@ -1,0 +1,42 @@
+# Ignore Git repository files
+.git/
+.gitignore
+.gitattributes
+
+# Ignore Docker specific files
+.dockerignore
+Dockerfile*
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore local development dependencies and build artifacts
+node_modules/
+vendor/
+composer.lock
+
+# Ignore log files and temporary files
+*.log
+*.tmp
+tmp/
+sessions/
+
+# Ignore documentation and READMEs (usually not needed in the image)
+*.md
+README.md
+GEMINI.md
+Read Me.txt
+LICENSE.md
+
+# Ignore OS-specific files and temporary build directories
+__pycache__/
+.DS_Store
+Thumbs.db
+
+# Ignore specific project files that are not needed in the image
+# (e.g., local config files, large media files, executables not meant for the container)
+# Example: 
+# config.php # If you are using env vars and don't want the local config copied
+# videos/
+# HeadlessVidX/HeadlessVidX.exe # Example of a local executable
