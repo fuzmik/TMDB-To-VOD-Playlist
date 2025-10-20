@@ -30,7 +30,7 @@ RUN npm install --omit=dev
 #    Uncomment ANY of the extra RUN lines to add more bundles.
 # ------------------------------------------------------------
 RUN npm install playwright@latest \
- && npx playwright install --with-deps chromium firefox chrome
+ && npx playwright install --with-deps firefox chromium
 
 # Optional extra browser bundles (uncomment as needed):
 # RUN npx playwright install --with-deps chrome-beta
