@@ -12,7 +12,20 @@ services:
       - "8080:80"
     volumes:
       - .:/var/www/html/  # Mount project directory for live code changes
-      - ./config.php:/var/www/html/config.php # Mount config.php
+      # - ./config.php:/var/www/html/config.php # Commented out to use env vars
+    environment:
+      # TMDB Settings
+      - TMDB_API_KEY=${TMDB_API_KEY}
+      - REAL_DEBRID_TOKEN=${REAL_DEBRID_TOKEN}
+      - PREMIUMIZE_TOKEN=${PREMIUMIZE_TOKEN}
+
+      # Network & Access Settings
+      - APP_HOST_IP=${APP_HOST_IP}
+      - APP_PROXY=${APP_PROXY}
+
+      # Feature Flags
+      - INCLUDE_ADULT_VOD=${INCLUDE_ADULT_VOD}
+      - CREATE_PLAYLIST=${CREATE_PLAYLIST}
     depends_on:
       - headlessvidx
     restart: unless-stopped
@@ -28,6 +41,13 @@ services:
       - "3202:3202"
     volumes:
       - vidx_files:/app/dict # Use a named volume for HeadlessVidX dictionary
+    environment:
+      - PORT=${PORT}
+      - SHOW_BROWSER=${SHOW_BROWSER}
+      - HEADLESS_PROXY=${HEADLESS_PROXY}
+      - USE_STEALTH_PLUGIN=${USE_STEALTH_PLUGIN}
+      - FIREFOX_EXECUTABLE_PATH=${FIREFOX_EXECUTABLE_PATH}
+      - VIDEO_TMP_DIR=${VIDEO_TMP_DIR}
     restart: unless-stopped
 
 volumes:
