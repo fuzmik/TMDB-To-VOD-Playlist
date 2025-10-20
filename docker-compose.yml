@@ -12,7 +12,7 @@ services:
       - "8080:80"
     volumes:
       - .:/var/www/html/  # Mount project directory for live code changes
-      # - ./config.php:/var/www/html/config.php # Commented out to use env vars
+      - tmdb_php_data:/var/www/html/data # New volume for PHP app data (logs, cache, etc.)
     environment:
       # TMDB Settings
       - TMDB_API_KEY=${TMDB_API_KEY}
@@ -29,6 +29,8 @@ services:
     depends_on:
       - headlessvidx
     restart: unless-stopped
+    networks:
+      - cosmos-tmdb-default
 
   headlessvidx:
     build:
@@ -40,7 +42,7 @@ services:
     ports:
       - "3202:3202"
     volumes:
-      - vidx_files:/app/dict # Use a named volume for HeadlessVidX dictionary
+      - headlessvidx_data:/app/dict # Changed from vidx_files to headlessvidx_data
     environment:
       - PORT=${PORT}
       - SHOW_BROWSER=${SHOW_BROWSER}
@@ -49,6 +51,19 @@ services:
       - FIREFOX_EXECUTABLE_PATH=${FIREFOX_EXECUTABLE_PATH}
       - VIDEO_TMP_DIR=${VIDEO_TMP_DIR}
     restart: unless-stopped
+    networks:
+      - cosmos-tmdb-default
+
+networks:
+  cosmos-tmdb-default:
+    name: cosmos-tmdb-default
+    external: false
+    driver: bridge
 
 volumes:
-  vidx_files:
+  tmdb_php_data: # New volume definition for PHP app data
+    driver: local
+    external: false
+  headlessvidx_data: # Changed from vidx_files
+    driver: local
+    external: false
