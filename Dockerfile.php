@@ -24,11 +24,6 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install -j$(nproc) zip \
-    && docker-php-ext-install -j$(nproc) curl \
-    && docker-php-ext-enable mbstring \
-    && docker-php-ext-install -j$(nproc) openssl \
-    && docker-php-ext-install -j$(nproc) json \
-    && docker-php-ext-install -j$(nproc) xml \
     && a2enmod rewrite \
     && a2enmod headers
 
