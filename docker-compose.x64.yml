@@ -1,0 +1,77 @@
+#version: "3.8"
+
+services:
+  php_app:
+    build:
+      context: .
+      dockerfile: Dockerfile.php_x64
+#      platform: linux/amd64
+    container_name: TMDB_VOD
+    image: tmdb_php:latest
+    ports:
+      - "8080:80"
+    volumes:
+#      - .:/var/www/html/  # Mount project directory for live code changes
+      - tmdb_php_data:/var/www/html/data # New volume for PHP app data (logs, cache, etc.)
+    environment:
+      # TMDB Settings
+      - TMDB_API_KEY=${TMDB_API_KEY}
+      - REAL_DEBRID_TOKEN=${REAL_DEBRID_TOKEN}
+      - PREMIUMIZE_TOKEN=${PREMIUMIZE_TOKEN}
+
+      # Network & Access Settings
+      - APP_HOST_IP=${APP_HOST_IP}
+      - APP_PROXY=${APP_PROXY}
+
+      # Feature Flags
+      - INCLUDE_ADULT_VOD=${INCLUDE_ADULT_VOD}
+      - CREATE_PLAYLIST=${CREATE_PLAYLIST}
+    depends_on:
+      - headlessvidx
+    restart: unless-stopped
+#    extra_hosts:
+#      - headlessvidx.duble.kozow.com:172.16.4.2
+#      - tmdb-vod.duble.kozow.com:172.16.4.3
+    networks:
+      - cosmos-tmdb-default
+
+  headlessvidx:
+    build:
+      context: ./HeadlessVidX
+      dockerfile: Dockerfile.headlessvidx_x64
+#      platform: linux/amd64
+    container_name: HeadlessVidX
+    image: headlessvidx:latest # Keep this if you want to use the pre-built image as a fallback or for specific architectures
+    ports:
+      - "3202:3202"
+    volumes:
+      - headlessvidx_data:/app/dict # Changed from vidx_files to headlessvidx_data
+    environment:
+      - PORT=${PORT}
+      - SHOW_BROWSER=${SHOW_BROWSER}
+      - HEADLESS_PROXY=${HEADLESS_PROXY}
+      - USE_STEALTH_PLUGIN=${USE_STEALTH_PLUGIN}
+#      - FIREFOX_EXECUTABLE_PATH=${FIREFOX_EXECUTABLE_PATH}
+#      - VIDEO_TMP_DIR=${VIDEO_TMP_DIR}
+    restart: unless-stopped
+#    extra_hosts:
+#      - headlessvidx.duble.kozow.com:172.16.4.2
+#      - tmdb-vod.duble.kozow.com:172.16.4.3
+    networks:
+      - cosmos-tmdb-default
+
+networks:
+  cosmos-tmdb-default:
+    name: cosmos-tmdb-default
+    external: false
+    driver: bridge
+
+volumes:
+  tmdb_php_data: # New volume definition for PHP app data
+    name: tmdb_php_data
+    driver: local
+    external: false
+  headlessvidx_data: # Changed from vidx_files
+    name: headlessvidx_data
+    driver: local
+    external: false
