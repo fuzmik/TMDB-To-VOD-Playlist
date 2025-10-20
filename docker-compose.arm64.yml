@@ -4,10 +4,10 @@ services:
   php_app:
     build:
       context: .
-      dockerfile: Dockerfile.php_x64
-#      platform: linux/amd64
+      dockerfile: Dockerfile.php_arm64
+#      platform: linux/arm64
     container_name: TMDB_VOD
-    image: tmdb_php:latest
+    image: ${TMDBPHPIMAGE}
     ports:
       - "8080:80"
     volumes:
@@ -35,10 +35,10 @@ services:
   headlessvidx:
     build:
       context: ./HeadlessVidX
-      dockerfile: Dockerfile.headlessvidx_x64
-#      platform: linux/amd64
+      dockerfile: Dockerfile
+#      platform: linux/arm64
     container_name: HeadlessVidX
-    image: headlessvidx:latest # Keep this if you want to use the pre-built image as a fallback or for specific architectures
+    image: ${HEADLESSVIDXIMAGE} # Keep this if you want to use the pre-built image as a fallback or for specific architectures
     ports:
       - "3202:3202"
     volumes:
