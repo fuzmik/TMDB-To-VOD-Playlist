@@ -1,0 +1,34 @@
+---
+version: "3.8"
+
+services:
+  php_app:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+      platform: linux/arm64
+    container_name: TMDB_VOD_PHP_APP
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html/  # Mount project directory for live code changes
+      - ./config.php:/var/www/html/config.php # Mount config.php
+    depends_on:
+      - headlessvidx
+    restart: unless-stopped
+
+  headlessvidx:
+    build:
+      context: ./HeadlessVidX
+      dockerfile: Dockerfile
+      platform: linux/arm64
+    container_name: HeadlessVidX
+    image: gogetta69/headlessvidx:latest # Keep this if you want to use the pre-built image as a fallback or for specific architectures
+    ports:
+      - "3202:3202"
+    volumes:
+      - vidx_files:/app/dict # Use a named volume for HeadlessVidX dictionary
+    restart: unless-stopped
+
+volumes:
+  vidx_files:
