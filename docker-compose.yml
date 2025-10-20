@@ -29,6 +29,9 @@ services:
     depends_on:
       - headlessvidx
     restart: unless-stopped
+    extra_hosts:
+      - headlessvidx.duble.kozow.com:172.16.4.2
+      - tmdb-vod.duble.kozow.com:172.16.4.3
     networks:
       - cosmos-tmdb-default
 
@@ -51,6 +54,9 @@ services:
 #      - FIREFOX_EXECUTABLE_PATH=${FIREFOX_EXECUTABLE_PATH}
 #      - VIDEO_TMP_DIR=${VIDEO_TMP_DIR}
     restart: unless-stopped
+    extra_hosts:
+      - headlessvidx.duble.kozow.com:172.16.4.2
+      - tmdb-vod.duble.kozow.com:172.16.4.3
     networks:
       - cosmos-tmdb-default
 

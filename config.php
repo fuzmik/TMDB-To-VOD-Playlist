@@ -88,7 +88,7 @@ $maxResolution = 1080; // numerical value only. This variable is not yet externa
 $maxFileSize = 50000; // numerical value in megabytes. This variable is not yet externalized.
 
 // Set the address HeadlessVidX is listening on.
-$HeadlessVidX_Address = "localhost:3202"; // Example: ip:port. This variable is not yet externalized.
+$HeadlessVidX_Address = "headlessvidx.duble.kozow.com"; // Example: ip:port. This variable is not yet externalized.
 
 // HEADLESSVIDX_MAX_THREADS controls the maximum number of concurrent curl requests (threads) 
 // that the script will handle simultaneously. Being headless browser operations, higher 
