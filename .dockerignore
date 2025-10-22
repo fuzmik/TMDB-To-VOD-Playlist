@@ -39,4 +39,8 @@ Thumbs.db
 # Example: 
 # config.php # If you are using env vars and don't want the local config copied
 # videos/
-# HeadlessVidX/HeadlessVidX.exe # Example of a local executable
+HeadlessVidX/
+docker-compose.arm64.yml
+docker-compose.x64.yml
+Dockerfile.php_arm64
+Dockerfile.php_x64
