@@ -47,7 +47,7 @@ RUN npm install playwright@latest \
 COPY . .
 
 # (Optional) build step for frontend / TS
-# RUN npm run build
+#RUN npm run build
 
 # ------------------------------------------------------------
 # Expose port & start server
