@@ -26,9 +26,18 @@ function HeadlessVidX_online() {
  
    global $HeadlessVidX_Address;
    
-   $response = @file_get_contents('http://' . $HeadlessVidX_Address . '/ping');
+   // Attempt to connect using HTTPS first
+   $response = @file_get_contents('https://' . $HeadlessVidX_Address . '/ping');
+    
+    // If HTTPS fails or doesn't return the expected string, try HTTP
+    if ($response === false || strpos($response, 'Server is running') === false) {
+        $response = @file_get_contents('http://' . $HeadlessVidX_Address . '/ping');
+    }
+
     if(strpos($response, 'Server is running')){
-        return "✔️ - <strong>Server: </strong><a href='http://$HeadlessVidX_Address/' target=_blank'>http://$HeadlessVidX_Address/</a>";
+        // Determine the protocol to use in the link
+        $protocol = (strpos($response, 'https://') !== false) ? 'https://' : 'http://';
+        return "✔️ - <strong>Server: </strong><a href='$protocol$HeadlessVidX_Address/' target=_blank'>$protocol$HeadlessVidX_Address/</a>";
     } else {
         $nodejsMessage = '<span style="color:red;font-size:14px;">❌ <br> Follow the "HeadlessVidX/Install Instructions.txt"</span>';
         return $nodejsMessage;
