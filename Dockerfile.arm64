@@ -27,6 +27,21 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && a2enmod rewrite \
     && a2enmod headers
 
+# Copy Apache configuration files
+COPY docker/apache2/apache2.conf /etc/apache2/apache2.conf
+COPY docker/apache2/ports.conf /etc/apache2/ports.conf
+COPY docker/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Enable Apache modules for proxying and rewrite
+RUN a2enmod proxy proxy_http proxy_wstunnel rewrite headers
+
+# Enable the default virtual host
+RUN a2ensite 000-default.conf
+
+# Set ServerName and configure reverse proxy for HeadlessVidX
+RUN sed -i 's/^#ServerName www.example.com/ServerName tmdb/' /etc/apache2/sites-available/000-default.conf
+RUN sed -i '/<\/VirtualHost>/i ProxyPreserveHost On\\n\\tProxyPass /headlessvidx/ http://localhost:3202/headlessvidx/\\n\tProxyPassReverse /headlessvidx/ http://localhost:3202/headlessvidx/' /etc/apache2/sites-available/000-default.conf
+
 # Copy the application files
 COPY . /var/www/html/
 
@@ -37,7 +52,7 @@ WORKDIR /var/www/html/
 RUN chown -R www-data:www-data /var/www/html/
 RUN chmod -R 755 /var/www/html/
 
-# Expose port 80 for Apache
+# Expose port 80 for Apache and 3202 for HeadlessVidX (if needed directly)
 EXPOSE 80 3202
 
 # Command to run Apache in the foreground
