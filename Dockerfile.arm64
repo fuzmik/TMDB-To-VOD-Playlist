@@ -40,7 +40,7 @@ RUN a2ensite 000-default.conf
 
 # Set ServerName and configure reverse proxy for HeadlessVidX
 RUN sed -i 's/^#ServerName www.example.com/ServerName tmdb/' /etc/apache2/sites-available/000-default.conf
-RUN sed -i '/<\/VirtualHost>/i ProxyPreserveHost On\\n\\tProxyPass /headlessvidx/ http://localhost:3202/headlessvidx/\\n\tProxyPassReverse /headlessvidx/ http://localhost:3202/headlessvidx/' /etc/apache2/sites-available/000-default.conf
+RUN sed -i '/CustomLog ${APACHE_LOG_DIR}\/access.log combined/a ProxyPreserveHost On\n\tProxyPass /headlessvidx/ http://localhost:3202/headlessvidx/\n\tProxyPassReverse /headlessvidx/ http://localhost:3202/headlessvidx/' /etc/apache2/sites-available/000-default.conf
 
 # Copy the application files
 COPY . /var/www/html/
