@@ -44,6 +44,7 @@ services:
       - headlessvidx_data:/app/files # Changed from vidx_files to headlessvidx_data
       - video_tmp:/app/videos_tmp:rw
     environment:
+      - PATH=/app/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - PORT=${PORT}
       - SHOW_BROWSER=${SHOW_BROWSER}
       - HEADLESS_PROXY=${HEADLESS_PROXY}
