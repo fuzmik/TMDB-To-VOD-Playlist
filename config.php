@@ -35,10 +35,11 @@ $premiumizeApiKey = getenv('PREMIUMIZE_TOKEN') ?: '';
 $userSetHost = getenv('APP_HOST_IP') ?: '';
 
 // Note: The $HTTP_PROXY is utilized only during the scraping of direct movie links. This is particularly necessary if you are making a large number of requests to obtain streaming links, such as when running this script as a service. It is recommended to use backconnect proxies from providers like stormproxies.com to avoid being blocked by streaming websites.
-$HTTP_PROXY = ""; // This variable is not yet externalized to environment variables.
+//$HTTP_PROXY = ""; // This variable is not yet externalized to environment variables.
+$HTTP_PROXY = getenv('APP_PROXY'); // This variable is not yet externalized to environment variables.
 
 //Enable or disable the $HTTP_PROXY setting.
-$USE_HTTP_PROXY = false; // This variable is not yet externalized to environment variables.
+$USE_HTTP_PROXY = true; // This variable is not yet externalized to environment variables.
 
 //When set to true your playist is created by running the 'create_playlist.php' and 'create_tv_playlist.php'
 //When set to false the the movie and tv show playlist will be loaded from github. The playlists on github 
@@ -88,7 +89,8 @@ $maxResolution = 1080; // numerical value only. This variable is not yet externa
 $maxFileSize = 50000; // numerical value in megabytes. This variable is not yet externalized.
 
 // Set the address HeadlessVidX is listening on.
-$HeadlessVidX_Address = "localhost:3202"; // Example: ip:port. This variable is not yet externalized.
+//$HeadlessVidX_Address = "localhost:3202"; // Example: ip:port. This variable is not yet externalized.
+$HeadlessVidX_Address = getenv('APP_HOST_IP'); // Example: ip:port. This variable is not yet externalized.
 
 // HEADLESSVIDX_MAX_THREADS controls the maximum number of concurrent curl requests (threads) 
 // that the script will handle simultaneously. Being headless browser operations, higher 
