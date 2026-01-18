@@ -258,8 +258,8 @@
         document.getElementById('howToUseLink').addEventListener('click', function() {
             const host = window.location.hostname;
             const port = window.location.port;
-            const dynamicUrl = `http://${host}:${port}/get-video?url=`;
-						const playUrl = `http://${host}:${port}/play?url=`;
+            const dynamicUrl = `https://${host}/get-video?url=`;
+						const playUrl = `https://${host}/play?url=`;
 						document.getElementById('playUrl1').textContent = playUrl;
             document.getElementById('dynamicUrl1').textContent = dynamicUrl;            
             document.getElementById('howToModal').style.display = "block";
@@ -283,7 +283,7 @@ document.getElementById('getVideoButton').addEventListener('click', function() {
     if (videoUrl) {
         const form = document.createElement('form');
         form.method = 'GET';
-        form.action = `http://${host}:${port}/get-video`;
+        form.action = `https://${host}/get-video`;
         form.target = '_blank';
         
         const input = document.createElement('input');
