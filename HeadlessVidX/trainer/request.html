@@ -317,12 +317,12 @@ async function sendRequest(data) {
     const host = window.location.hostname;
     const port = window.location.port;
 
-    if (!port) {
+/*    if (!port) {
         renderError('Port number is not specified in the URL.');
         notifyParent('requestError', { uniqueId, error: 'No port specified' });
         return;
     }
-
+*/
     console.log("[REQUEST] Data before conversion:", data);
 
     // Convert and prepare data
@@ -344,7 +344,8 @@ async function sendRequest(data) {
     data.trainRequest = true;
     console.log("[REQUEST] Data after conversion:", data);
 
-    const endpoint = `http://${host}:${port}/extract-video`;
+    //const endpoint = `https://${host}/extract-video`;
+    const endpoint =  `https://${host}/extract-video`;
     const jsonData = JSON.stringify(data);
 
     try {
@@ -389,6 +390,15 @@ async function sendRequest(data) {
         // Hide spinner once we have response
         hideSpinner();
 
+	// ADD THESE LINES HERE TO FORCE HTTPS:
+        if (responseData.streamUrl) {
+            responseData.streamUrl = responseData.streamUrl.replace('http://', 'https://');
+        }
+        if (responseData.proxy) {
+            // This also removes the :80 port which is common for HTTP but not HTTPS
+            responseData.proxy = responseData.proxy.replace('http://', 'https://').replace(':80/', '/');
+        }
+        
         // Handle successful video extraction
         if (responseData.url) {
             const { site, ...submittedData } = data;
